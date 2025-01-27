@@ -6,6 +6,10 @@ const cors = require('cors');
 // Load environment variables from .env file
 dotenv.config();
 
+const connectToDb= require('./db/db')
+
+connectToDb()
+
 // Initialize express app
 const app = express();
 
