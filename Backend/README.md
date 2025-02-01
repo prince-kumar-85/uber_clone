@@ -23,6 +23,7 @@ The request body should be a JSON object containing the following fields:
     "firstname": "John",
     "lastname": "Doe"
   },
+  
   "email": "john.doe@example.com",
   "password": "password123"
 }
