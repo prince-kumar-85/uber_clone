@@ -147,3 +147,99 @@ The request body should be a JSON object containing the following fields:
 
 ### Notes
 - Ensure that all required fields are provided in the request body.
+
+## /user/profile
+
+### Description
+This endpoint retrieves the profile information of the authenticated user.
+
+### Method
+`GET`
+
+### Authentication
+Requires a valid JWT token in either:
+- Cookie named 'token'
+- Authorization header with Bearer token
+
+### Request
+No request body required.
+
+### Example Request
+```http
+GET /user/profile HTTP/1.1
+Host: example.com
+Authorization: Bearer jwt_token_here
+```
+
+### Responses
+
+#### Success
+- **Status Code**: `200 OK`
+- **Response Body**:
+  ```json
+  {
+    "_id": "user_id_here",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: `401 Unauthorized`
+- **Response Body**:
+  ```json
+  {
+    "msg": "No token, authorization denied"
+  }
+  ```
+
+## /user/logout
+
+### Description
+This endpoint logs out the current user and invalidates their token.
+
+### Method
+`GET`
+
+### Authentication
+Requires a valid JWT token in either:
+- Cookie named 'token'
+- Authorization header with Bearer token
+
+### Request
+No request body required.
+
+### Example Request
+```http
+GET /user/logout HTTP/1.1
+Host: example.com
+Authorization: Bearer jwt_token_here
+```
+
+### Responses
+
+#### Success
+- **Status Code**: `200 OK`
+- **Response Body**:
+  ```json
+  {
+    "message": "logged out"
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: `401 Unauthorized`
+- **Response Body**:
+  ```json
+  {
+    "msg": "No token, authorization denied"
+  }
+  ```
+
+### Notes
+- The token is blacklisted after logout
+- Clears the token cookie if present
+- Any subsequent requests with the same token will be rejected
