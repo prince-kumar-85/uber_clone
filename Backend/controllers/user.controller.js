@@ -48,5 +48,22 @@ module.exports.loginUser = async (req, res, next) => {
     // if user is found and password is correct, create a token
     const token = user.generateAuthToken();
 
+    //adding the cookie token to the response
+    res.cookie('token', token, {
+        maxAge: 3600000, // 1 hour
+        // secure: process.env.NODE_ENV==='production', // set to true if your using https
+        httpOnly: true,
+    });
+
     res.status(200).json({ token, user });
+};
+
+
+module.exports.getUserProfile = async (req, res, next) => {
+    // const user = await userModel.findById(req.user._id);
+    // if (!user) {
+    //     return res.status(404).json({ msg: 'User not found' });
+    // }
+
+    res.status(200).json(req.user);
 };
