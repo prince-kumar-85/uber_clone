@@ -1,35 +1,34 @@
-// Import required modules
 const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const cors = require('cors');
-const cookiesParser = require('cookie-parser');
+const app = express();
+const cookieParser = require('cookie-parser');
+const connectToDb = require('./db/db');
 const userRoutes = require('./routes/user.routes');
 const captainRoutes = require('./routes/captain.routes');
+// const mapsRoutes = require('./routes/maps.routes');
+// const rideRoutes = require('./routes/ride.routes');
 
-// Load environment variables from .env file
-dotenv.config();
-
-// Initialize the express app
-const app = express();
-
-// Use middlewares
-app.use(cookiesParser()); // For cookie parsing
-app.use(express.json()); // For parsing JSON bodies
-app.use(express.urlencoded({ extended: true })); // For parsing URL-encoded bodies
-app.use(cors()); // For enabling cross-origin resource sharing
-
-// Connect to the database (MongoDB in this case)
-const connectToDb = require('./db/db');
 connectToDb();
 
-// Define a route to check if the server is working
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-// Use the routes for users and captains
 app.use('/users', userRoutes);
 app.use('/captains', captainRoutes);
+// app.use('/maps', mapsRoutes);
+// app.use('/rides', rideRoutes);
 
-// Export the app module to use it in other files (like server.js)
+
+
+
 module.exports = app;
