@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 function Captainlogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userData, setUserData] = useState({});
+  const [captainData, setCaptainData] = useState('');
 
   const submitHandler = (e) => {
     e.preventDefault();
     alert(`You are logged in as ${email}`);
-    setUserData({
+    setCaptainData({
       email: email,
       password: password,
     });
@@ -21,8 +21,8 @@ function Captainlogin() {
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
         <img
-          className="w-20 mb-10"
-          src="https://download.logo.wine/logo/Uber/Uber-Logo.wine.png"
+          className="w-20 mb-3"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSVCO4w_adxK32rCXFeKq3_NbLcR9b_js14w&s"
           alt="Uber Logo"
         />
 
@@ -53,19 +53,19 @@ function Captainlogin() {
           </button>
 
           <p className="text-center mt-3">
-            New Here?{' '}
-            <Link to='/signup' className="text-blue-600">
-              Create a new Account
+            Jion a fleet?{' '}
+            <Link to='/captain-signup' className="text-blue-600">
+              Register as a Captain
             </Link>
           </p>
         </form>
       </div>
       <div>
         <Link
-          to='/captain-login'
-          className="bg-[#10b461] flex items-center justify-center font-semibold mb-15 rounded px-4 py-2 w-full text-lg text-white"
+          to='/login'
+          className="bg-[#d5622d] flex items-center justify-center font-semibold mb-15 rounded px-4 py-2 w-full text-lg text-white"
         >
-          Sign in as Captain
+          Sign in as User
         </Link>
       </div>
     </div>
