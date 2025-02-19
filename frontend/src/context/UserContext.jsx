@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 // Creating a context for user data
 export const UserDataContext = createContext();
 
-function UserContextProvider({ children }) {
+function UserContext({ children }) {
   const [user, setUser] = useState({
     email: '',
     fullName: {
@@ -13,10 +13,10 @@ function UserContextProvider({ children }) {
   });
 
   return (
-    <UserDataContext.Provider value={[user, setUser]}>
+    <UserDataContext.Provider value={{user, setUser}}>
       {children}
     </UserDataContext.Provider>
   );
 }
 
-export default UserContextProvider;
+export default UserContext;
