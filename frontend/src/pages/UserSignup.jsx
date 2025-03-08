@@ -4,24 +4,34 @@ import axios from "axios";
 import { UserDataContext } from "../context/UserContext";
 
 const UserSignup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const { setUser } = useContext(UserDataContext);
 
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
 
     const newUser = {
       fullname: {
-        firstname: firstName,
-        lastname: lastName,
+        firstname: userData.firstName,
+        lastname: userData.lastName,
       },
-      email: email,
-      password: password,
+      email: userData.email,
+      password: userData.password,
     };
 
     try {
@@ -35,15 +45,12 @@ const UserSignup = () => {
         navigate("/home");
       }
     } catch (error) {
-      console.error("Signup failed:", error.response?.data || error.message);
-      alert("Signup failed! Please try again.");
+      const errorMsg = error.response?.data?.message || "Signup failed! Please try again.";
+      setErrorMessage(errorMsg);
+    } finally {
+      setLoading(false);
+      setUserData({ firstName: "", lastName: "", email: "", password: "" });
     }
-
-    // Reset form fields
-    setEmail("");
-    setFirstName("");
-    setPassword("");
-    setLastName("");
   };
 
   return (
@@ -62,16 +69,18 @@ const UserSignup = () => {
             <input
               className="w-1/2 bg-gray-200 rounded px-4 py-2 border text-base placeholder:text-sm"
               required
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              name="firstName"
+              value={userData.firstName}
+              onChange={handleChange}
               placeholder="Enter your First Name"
               type="text"
             />
             <input
               className="w-1/2 bg-gray-200 rounded px-4 py-2 border text-base placeholder:text-sm"
               required
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
               placeholder="Enter your Last Name"
               type="text"
             />
@@ -82,8 +91,9 @@ const UserSignup = () => {
           <input
             className="bg-gray-200 mb-6 rounded px-4 py-2 border w-full text-base placeholder:text-sm"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
             required
             placeholder="email@example.com"
           />
@@ -93,17 +103,23 @@ const UserSignup = () => {
           <input
             className="bg-gray-200 mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={userData.password}
+            onChange={handleChange}
             required
             placeholder="Password"
           />
 
+          {/* Error Message */}
+          {errorMessage && <p className="text-red-500 mb-3">{errorMessage}</p>}
+
+          {/* Submit Button */}
           <button
             className="bg-black font-semibold mb-3 rounded px-4 py-2 w-full text-base text-white"
             type="submit"
+            disabled={loading}
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
           <p className="text-center mt-3">
